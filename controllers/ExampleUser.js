@@ -1,40 +1,30 @@
-const getExampleUser = (req, res, next) => {
-  const exampleUser = {
-    user_id: 1313,
-    username: "KamilEngine",
-    password: "Panda13",
-    name: "Kamil",
-    lastname: "Adams",
-    age: 35,
-    email: "kamiladamsk@gmail.com",
-    skills: {
-      js: true,
-      java: true,
-      cypress: true,
-      python: false,
-    }
-  }
-  res.status(200).send(exampleUser)
+import { ExplainVerbosity,ObjectId } from 'mongodb';
+import db from '../services/MongoService.js'
 
+const getExampleUser = async (req, res, next) => {
+  const userId = req.query?.id ?? undefined
+  const collection = db.collection('ExampleCollection');
+  const userData = await collection.findOne({ _id: new ObjectId(userId)})
+
+  if (userData !== null) {
+    res.status(200).send(userData)
+  } else {
+    res.status(400).send("User not exist!")
+  }
 }
 
-const postExampleUser = (req, res, next) => {
-  const exampleUser = {
-    user_id: 1313,
-    username: "KamilEngine",
-    password: "Panda13",
-    name: "Kamil",
-    lastname: "Adams",
-    age: 35,
-    email: "kamiladamsk@gmail.com",
-    skills: {
-      js: true,
-      java: true,
-      cypress: true,
-      python: false,
-    }
+const postExampleUser = async(req, res, next) => {
+  const email = req.query?.email ?? undefined
+  const password = req.query?.password ?? undefined
+
+  const collection = db.collection('ExampleCollection');
+  const userData = await collection.insertOne({email: email, password: password })
+
+  if (userData !== null) {
+    res.status(200).send(userData)
+  } else {
+    res.status(400).send("User not exist!")
   }
-  res.status(201).send(exampleUser)
 }
 
 const putExampleUser = (req, res, next) => {
@@ -72,17 +62,24 @@ const patchExampleUser = (req, res, next) => {
       python: true,
     }
   }
+["JS","Python","Java"]
+
   res.status(200).send(exampleUser)
 }
 
-const deleteExampleUser = (req, res, next) => {
-  message = {
-    message: "User deleted succesfuly"
+const deleteExampleUser = async (req, res, next) => {
+  const userId = req.query?.id ?? undefined
+  const collection = db.collection('ExampleCollection');
+  const result = await collection.deleteOne({ _id: new ObjectId(userId)})
+
+  if (result.deletedCount === 1) {
+    res.status(200).send("User deleted succesfuly")
+  } else {
+    res.status(400).send("User not exist!")
   }
-  res.status(200).send(message)
 }
 
- const userController ={
+const userController = {
   getExampleUser,
   postExampleUser,
   putExampleUser,
