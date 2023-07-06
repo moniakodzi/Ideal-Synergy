@@ -1,13 +1,12 @@
-import userController from './controllers/ExampleUser.js';
+import userController from './controllers/User.js';
 import { Router } from 'express';
-import exampleDataController from './controllers/ExampleCollection.js';
 const router = Router();
 
-router.get('/api/example-user', userController.getExampleUser)
-router.post('/api/example-user',userController.postExampleUser)
-router.put('/api/example-user', userController.putExampleUser)
-router.patch('/api/example-user', userController.patchExampleUser)
-router.delete('/api/example-user', userController.deleteExampleUser)
-router.get('/api/mongo-data', exampleDataController.getExampleData)
+router.get('/api/user', userController.getUser)
+router.post('/api/user',userController.postUser)
+router.put('/api/user', userController.putUser)
+router.patch('/api/user', userController.patchUser)
+router.delete('/api/user', userController.deleteUser)
+
 
 export default router

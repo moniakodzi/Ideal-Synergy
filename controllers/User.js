@@ -1,9 +1,9 @@
-import { ExplainVerbosity,ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import db from '../services/MongoService.js'
 
-const getExampleUser = async (req, res, next) => {
+const getUser = async (req, res, next) => {
   const userId = req.query?.id ?? undefined
-  const collection = db.collection('ExampleCollection');
+  const collection = db.collection('Users');
   const userData = await collection.findOne({ _id: new ObjectId(userId)})
 
   if (userData !== null) {
@@ -13,11 +13,11 @@ const getExampleUser = async (req, res, next) => {
   }
 }
 
-const postExampleUser = async(req, res, next) => {
+const postUser = async(req, res, next) => {
   const email = req.query?.email ?? undefined
   const password = req.query?.password ?? undefined
 
-  const collection = db.collection('ExampleCollection');
+  const collection = db.collection('Users');
   const userData = await collection.insertOne({email: email, password: password })
 
   if (userData !== null) {
@@ -27,8 +27,8 @@ const postExampleUser = async(req, res, next) => {
   }
 }
 
-const putExampleUser = (req, res, next) => {
-  const exampleUser = {
+const putUser = (req, res, next) => {
+  const User = {
     user_id: 1314,
     username: "MoniaEngine",
     password: "Panda1313",
@@ -43,11 +43,11 @@ const putExampleUser = (req, res, next) => {
       python: true,
     }
   }
-  res.status(200).send(exampleUser)
+  res.status(200).send(User)
 }
 
-const patchExampleUser = (req, res, next) => {
-  const exampleUser = {
+const patchUser = (req, res, next) => {
+  const User = {
     user_id: 1314,
     username: "MoniaEngine",
     password: "Panda1313",
@@ -64,12 +64,12 @@ const patchExampleUser = (req, res, next) => {
   }
 ["JS","Python","Java"]
 
-  res.status(200).send(exampleUser)
+  res.status(200).send(User)
 }
 
-const deleteExampleUser = async (req, res, next) => {
+const deleteUser = async (req, res, next) => {
   const userId = req.query?.id ?? undefined
-  const collection = db.collection('ExampleCollection');
+  const collection = db.collection('Users');
   const result = await collection.deleteOne({ _id: new ObjectId(userId)})
 
   if (result.deletedCount === 1) {
@@ -80,11 +80,11 @@ const deleteExampleUser = async (req, res, next) => {
 }
 
 const userController = {
-  getExampleUser,
-  postExampleUser,
-  putExampleUser,
-  patchExampleUser,
-  deleteExampleUser
+  getUser,
+  postUser,
+  putUser,
+  patchUser,
+  deleteUser
 }
 
 export default userController
